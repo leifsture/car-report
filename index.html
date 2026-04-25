@@ -144,12 +144,13 @@
       <table>
         <thead>
           <tr>
+            <th></th>
             <th>Dag</th><th>Datum</th><th>Rutt</th>
             <th>Amount &#8369;</th><th>Diesel &#8369;</th>
             <th class="cc">Driver Income &#8369;</th><th class="cc">Remittance &#8369;</th>
             <th>Odo Start</th><th>Odo Stop</th>
             <th class="cc">Mil Dist.</th><th>Lit Diesel</th>
-            <th class="cc">Diesel Cons.</th><th></th>
+            <th class="cc">Diesel Cons.</th>
           </tr>
         </thead>
         <tbody id="tbody"><tr><td colspan="13" class="tom">Laddar...</td></tr></tbody>
@@ -325,6 +326,8 @@ function visaTabell(lista) {
   lista.forEach(function(r) { sa+=r.amount||0; sd+=r.diesel||0; sdi+=r.driver_income||0; sr+=r.remittance||0; });
   var html = lista.map(function(r) {
     return "<tr>" +
+      "<td><button class='eb' onclick='oppna(" + r.id + ")' title='Redigera'>&#9998;</button> " +
+      "<button class='db' onclick='del(" + r.id + ")' title='Ta bort'>&#x2715;</button></td>" +
       "<td>" + (r.dag||"-") + "</td>" +
       "<td>" + (r.datum||"-") + "</td>" +
       "<td style='max-width:180px;overflow:hidden;text-overflow:ellipsis' title='" + (r.rutt||"") + "'>" + (r.rutt||"-") + "</td>" +
@@ -337,10 +340,9 @@ function visaTabell(lista) {
       "<td class='cv'>" + (r.mil_distance!=null ? fmt(r.mil_distance) : "-") + "</td>" +
       "<td>" + (r.lit_diesel!=null ? r.lit_diesel : "-") + "</td>" +
       "<td class='cv'>" + (r.diesel_consumption!=null ? Number(r.diesel_consumption).toFixed(2) : "-") + "</td>" +
-      "<td><button class='eb' onclick='oppna(" + r.id + ")' title='Redigera'>&#9998;</button> " +
-      "<button class='db' onclick='del(" + r.id + ")' title='Ta bort'>&#x2715;</button></td></tr>";
+      "</tr>";
   }).join("");
-  html += "<tr class='sr'><td colspan='3'>Summa</td><td>" + fmt(sa) + "</td><td>" + fmt(sd) + "</td><td class='cv'>" + fmt(sdi) + "</td><td class='cv'>" + fmt(sr) + "</td><td colspan='6'></td></tr>";
+  html += "<tr class='sr'><td colspan='4'>Summa</td><td>" + fmt(sa) + "</td><td>" + fmt(sd) + "</td><td class='cv'>" + fmt(sdi) + "</td><td class='cv'>" + fmt(sr) + "</td><td colspan='5'></td></tr>";
   tb.innerHTML = html;
 }
 
