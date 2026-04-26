@@ -84,7 +84,7 @@ def spara_kor():
     dag = ""
     try:
         dt = datetime.strptime(datum, "%Y-%m-%d")
-        dagar = ["Mån","Tis","Ons","Tor","Fre","Lör","Sön"]
+        dagar = ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"]
         dag = dagar[dt.weekday()]
     except:
         pass
@@ -108,7 +108,7 @@ def spara_kor():
             VALUES (?,?,?,?,?,?,?,?,?,?,?,?)
         """, (datum, dag, d.get("rutt",""), amount, diesel, driver_income, remittance,
               odo_start, odo_stop, mil_distance, lit_diesel, diesel_consumption))
-    return jsonify({"status": "ok", "meddelande": "Tur sparad"})
+    return jsonify({"status": "ok", "meddelande": "Trip saved"})
 
 @app.route("/api/korjournal", methods=["GET"])
 def hamta_kor():
@@ -133,7 +133,7 @@ def uppdatera_kor(rid):
     dag = ""
     try:
         dt = datetime.strptime(datum, "%Y-%m-%d")
-        dagar = ["Mån","Tis","Ons","Tor","Fre","Lör","Sön"]
+        dagar = ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"]
         dag = dagar[dt.weekday()]
     except:
         pass
@@ -162,7 +162,7 @@ def spara_utgift():
     with get_db() as con:
         con.execute("INSERT INTO utgifter (datum, expensives, kommentar) VALUES (?,?,?)",
                     (d.get("datum"), float(d.get("expensives") or 0), d.get("kommentar","")))
-    return jsonify({"status": "ok", "meddelande": "Utgift sparad"})
+    return jsonify({"status": "ok", "meddelande": "Expense saved"})
 
 @app.route("/api/utgifter", methods=["GET"])
 def hamta_utgifter():
@@ -187,7 +187,7 @@ def spara_bdo():
     with get_db() as con:
         con.execute("INSERT INTO bdo (datum, belopp) VALUES (?,?)",
                     (d.get("datum"), float(d.get("belopp") or 0)))
-    return jsonify({"status": "ok", "meddelande": "BDO-insättning sparad"})
+    return jsonify({"status": "ok", "meddelande": "BDO deposit saved"})
 
 @app.route("/api/bdo", methods=["GET"])
 def hamta_bdo():
@@ -212,7 +212,7 @@ def spara_lorna():
     with get_db() as con:
         con.execute("INSERT INTO lorna (datum, belopp) VALUES (?,?)",
                     (d.get("datum"), float(d.get("belopp") or 0)))
-    return jsonify({"status": "ok", "meddelande": "Lorna-insättning sparad"})
+    return jsonify({"status": "ok", "meddelande": "Lorna deposit saved"})
 
 @app.route("/api/lorna", methods=["GET"])
 def hamta_lorna():
@@ -305,8 +305,8 @@ def hamta_ar():
 
 if __name__ == "__main__":
     init_db()
-    print("\n✅ Körjournal startar!")
-    print("📋 Körjournal:  http://localhost:5000")
-    print("💰 Utgifter:    http://localhost:5000/utgifter")
-    print("📊 Summering:   http://localhost:5000/summering\n")
+    print("\n✅ Driver journal starting!")
+    print("📋 Journal:    http://localhost:5000")
+    print("💰 Expenses:   http://localhost:5000/utgifter")
+    print("📊 Summary:    http://localhost:5000/summering\n")
     app.run(debug=True, port=5000)

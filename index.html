@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Körjournal</title>
+  <title>Driver Journal</title>
   <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Fraunces:ital,wght@0,300;0,600;1,300&display=swap" rel="stylesheet">
   <style>
     :root {
@@ -92,18 +92,18 @@
 </nav>
 
 <div class="container">
-  <h1 class="page-title">Körjournal</h1>
-  <p class="page-sub">Registrera körningar — beräkningsfält fylls i automatiskt</p>
+  <h1 class="page-title">Driver Journal</h1>
+  <p class="page-sub">Register trips — calculated fields are filled in automatically</p>
 
   <div class="card">
-    <div class="card-title">Ny körning</div>
+    <div class="card-title">New trip</div>
     <div class="grid grid-2 row">
-      <div class="falt"><label>Datum</label><input type="date" id="datum"></div>
-      <div class="falt"><label class="cl">Dag (auto)</label><input type="text" id="dag" class="cf" readonly placeholder="Beräknas"></div>
+      <div class="falt"><label>Date</label><input type="date" id="datum"></div>
+      <div class="falt"><label class="cl">Day (auto)</label><input type="text" id="dag" class="cf" readonly placeholder="Calculated"></div>
     </div>
     <div class="falt row">
-      <label>Rutt (From – To)</label>
-      <textarea id="rutt" placeholder="T.ex. Seaport Tagbilaran City - Mayana Guindulman"></textarea>
+      <label>Route (From - To)</label>
+      <textarea id="rutt" placeholder="E.g. Seaport Tagbilaran City - Mayana Guindulman"></textarea>
     </div>
     <div class="grid grid-4 row">
       <div class="falt"><label>Amount (&#8369;)</label><input type="text" id="amount" placeholder="0"></div>
@@ -121,25 +121,25 @@
       <div class="falt"><label class="cl">Diesel Consumption (auto)</label><input type="text" id="diesel_consumption" class="cf" readonly placeholder="0.00"></div>
     </div>
     <div class="btn-row">
-      <button class="btn-p" id="spara-btn">Spara körning</button>
-      <button class="btn-g" id="rensa-btn">Rensa</button>
+      <button class="btn-p" id="spara-btn">Save trip</button>
+      <button class="btn-g" id="rensa-btn">Clear</button>
       <div id="msg"></div>
     </div>
   </div>
 
   <div class="card">
     <div class="th">
-      <div class="card-title" style="margin:0;border:none;padding:0">Registrerade körningar</div>
+      <div class="card-title" style="margin:0;border:none;padding:0">Registered trips</div>
       <div style="display:flex;gap:0.75rem;flex-wrap:wrap;align-items:center">
-        <div class="ar-filter"><select id="ar-val"><option value="">Alla år</option></select></div>
-        <input type="date" id="fran-datum" title="Från datum">
+        <div class="ar-filter"><select id="ar-val"><option value="">All years</option></select></div>
+        <input type="date" id="fran-datum" title="From date">
         <span style="font-size:11px;color:var(--muted)">–</span>
-        <input type="date" id="till-datum" title="Till datum">
-        <input type="text" id="sok" placeholder="Sök rutt...">
-        <button class="btn-g" id="skriv-ut-btn" title="Skriv ut">&#128438; Skriv ut</button>
-        <button class="btn-g" id="csv-btn" title="Exportera CSV">&#11015; CSV</button>
-        <button class="btn-g" id="backup-btn" title="Ladda ner databas">&#128190; Backup</button>
-        <button class="btn-g" id="rakna-om-btn" title="Räkna om alla rader med rätt formel">&#8635; Räkna om</button>
+        <input type="date" id="till-datum" title="To date">
+        <input type="text" id="sok" placeholder="Search route...">
+        <button class="btn-g" id="skriv-ut-btn" title="Print">&#128438; Print</button>
+        <button class="btn-g" id="csv-btn" title="Export CSV">&#11015; CSV</button>
+        <button class="btn-g" id="backup-btn" title="Download database">&#128190; Backup</button>
+        <button class="btn-g" id="rakna-om-btn" title="Recalculate all rows">&#8635; Recalculate</button>
       </div>
     </div>
     <div class="print-header" id="print-header"></div>
@@ -148,7 +148,7 @@
         <thead>
           <tr>
             <th></th>
-            <th>Dag</th><th>Datum</th><th>Rutt</th>
+            <th>Day</th><th>Date</th><th>Route</th>
             <th>Amount &#8369;</th><th>Diesel &#8369;</th>
             <th class="cc">Driver Income &#8369;</th><th class="cc">Remittance &#8369;</th>
             <th>Odo Start</th><th>Odo Stop</th>
@@ -156,7 +156,7 @@
             <th class="cc">Diesel Cons.</th>
           </tr>
         </thead>
-        <tbody id="tbody"><tr><td colspan="13" class="tom">Laddar...</td></tr></tbody>
+        <tbody id="tbody"><tr><td colspan="13" class="tom">Loading...</td></tr></tbody>
       </table>
     </div>
   </div>
@@ -165,13 +165,13 @@
 <!-- MODAL -->
 <div class="mo" id="modal">
   <div class="mi">
-    <div class="mt">Redigera körning</div>
+    <div class="mt">Edit trip</div>
     <input type="hidden" id="eid">
     <div class="grid grid-2 row">
-      <div class="falt"><label>Datum</label><input type="date" id="ed"></div>
-      <div class="falt"><label class="cl">Dag (auto)</label><input type="text" id="edag" class="cf" readonly></div>
+      <div class="falt"><label>Date</label><input type="date" id="ed"></div>
+      <div class="falt"><label class="cl">Day (auto)</label><input type="text" id="edag" class="cf" readonly></div>
     </div>
-    <div class="falt row"><label>Rutt</label><textarea id="erutt"></textarea></div>
+    <div class="falt row"><label>Route</label><textarea id="erutt"></textarea></div>
     <div class="grid grid-4 row">
       <div class="falt"><label>Amount (&#8369;)</label><input type="text" id="ea"></div>
       <div class="falt"><label>Diesel (&#8369;)</label><input type="number" id="ediesel" step="0.01"></div>
@@ -188,8 +188,8 @@
       <div class="falt"><label class="cl">Diesel Consumption (auto)</label><input type="text" id="edc" class="cf" readonly></div>
     </div>
     <div class="mb">
-      <button class="btn-p" id="esave-btn">Spara ändringar</button>
-      <button class="btn-g" id="eclose-btn">Avbryt</button>
+      <button class="btn-p" id="esave-btn">Save changes</button>
+      <button class="btn-g" id="eclose-btn">Cancel</button>
       <span id="emsg" style="font-size:12px;color:var(--accent)"></span>
     </div>
   </div>
@@ -209,7 +209,7 @@ function fmtI(v) {
 function dag(ds) {
   if (!ds) return "";
   var d = new Date(ds + "T12:00:00");
-  return ["Son","Man","Tis","Ons","Tor","Fre","Lor"][d.getDay()];
+  return ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"][d.getDay()];
 }
 function getRaw(el) {
   var s = (el.dataset.raw || el.value || "").toString().replace(/\s/g,"").replace(/[^0-9.]/g,"");
@@ -232,14 +232,14 @@ function calc(aEl, dEl, osEl, ostEl, ldEl, diEl, rEl, mdEl, dcEl) {
   dcEl.value = dc ? dc.toFixed(2) : "";
 }
 
-// Initialisera datum
+// Initialize date
 document.getElementById("datum").value = new Date().toISOString().split("T")[0];
 document.getElementById("dag").value = dag(document.getElementById("datum").value);
 document.getElementById("datum").addEventListener("change", function() {
   document.getElementById("dag").value = dag(this.value);
 });
 
-// Amount formatering
+// Amount formatting
 document.getElementById("amount").addEventListener("input", function() {
   var raw = this.value.replace(/\s/g,"").replace(/[^0-9]/g,"");
   this.dataset.raw = raw;
@@ -260,7 +260,7 @@ function doCalc() {
   );
 }
 
-// Rensa
+// Clear
 document.getElementById("rensa-btn").addEventListener("click", function() {
   ["diesel","lit_diesel","odo_start","odo_stop","rutt"].forEach(function(id) { document.getElementById(id).value = ""; });
   ["driver_income","remittance","mil_distance","diesel_consumption"].forEach(function(id) { document.getElementById(id).value = ""; });
@@ -269,9 +269,9 @@ document.getElementById("rensa-btn").addEventListener("click", function() {
   document.getElementById("dag").value = dag(document.getElementById("datum").value);
 });
 
-// Spara
+// Save
 document.getElementById("spara-btn").addEventListener("click", function() {
-  var btn = this; btn.disabled = true; btn.textContent = "Sparar...";
+  var btn = this; btn.disabled = true; btn.textContent = "Saving...";
   fetch("/api/korjournal", {
     method: "POST", headers: {"Content-Type":"application/json"},
     body: JSON.stringify({
@@ -288,8 +288,8 @@ document.getElementById("spara-btn").addEventListener("click", function() {
   }).then(function(r) {
     visaMsg(r.d.meddelande, r.ok?"ok":"fel");
     if (r.ok) { document.getElementById("rensa-btn").click(); hamtaData(); }
-  }).catch(function() { visaMsg("Anslutningsfel","fel"); })
-  .finally(function() { btn.disabled=false; btn.textContent="Spara körning"; });
+  }).catch(function() { visaMsg("Connection error","fel"); })
+  .finally(function() { btn.disabled=false; btn.textContent="Save trip"; });
 });
 
 function visaMsg(txt, typ) {
@@ -299,7 +299,7 @@ function visaMsg(txt, typ) {
   setTimeout(function() { el.style.display="none"; }, 3000);
 }
 
-// Tabell
+// Table
 document.getElementById("sok").addEventListener("input", filtrera);
 document.getElementById("ar-val").addEventListener("change", function() {
   document.getElementById("fran-datum").value = "";
@@ -324,13 +324,13 @@ function filtrera() {
 
 function visaTabell(lista) {
   var tb = document.getElementById("tbody");
-  if (!lista.length) { tb.innerHTML = '<tr><td colspan="13" class="tom">Inga körningar registrerade</td></tr>'; return; }
+  if (!lista.length) { tb.innerHTML = '<tr><td colspan="13" class="tom">No trips registered</td></tr>'; return; }
   var sa=0, sd=0, sdi=0, sr=0;
   lista.forEach(function(r) { sa+=r.amount||0; sd+=r.diesel||0; sdi+=r.driver_income||0; sr+=r.remittance||0; });
   var html = lista.map(function(r) {
     return "<tr>" +
       "<td><button class='eb' onclick='oppna(" + r.id + ")' title='Redigera'>&#9998;</button> " +
-      "<button class='db' onclick='del(" + r.id + ")' title='Ta bort'>&#x2715;</button></td>" +
+      "<button class='db' onclick='del(" + r.id + ")' title='Delete'>&#x2715;</button></td>" +
       "<td>" + (r.dag||"-") + "</td>" +
       "<td>" + (r.datum||"-") + "</td>" +
       "<td style='max-width:180px;overflow:hidden;text-overflow:ellipsis' title='" + (r.rutt||"") + "'>" + (r.rutt||"-") + "</td>" +
@@ -345,7 +345,7 @@ function visaTabell(lista) {
       "<td class='cv'>" + (r.diesel_consumption!=null ? Number(r.diesel_consumption).toFixed(2) : "-") + "</td>" +
       "</tr>";
   }).join("");
-  html += "<tr class='sr'><td colspan='4'>Summa</td><td>" + fmt(sa) + "</td><td>" + fmt(sd) + "</td><td class='cv'>" + fmt(sdi) + "</td><td class='cv'>" + fmt(sr) + "</td><td colspan='5'></td></tr>";
+  html += "<tr class='sr'><td colspan='4'>Total</td><td>" + fmt(sa) + "</td><td>" + fmt(sd) + "</td><td class='cv'>" + fmt(sdi) + "</td><td class='cv'>" + fmt(sr) + "</td><td colspan='5'></td></tr>";
   tb.innerHTML = html;
 }
 
@@ -366,7 +366,7 @@ function hamtaAr() {
 }
 
 function del(id) {
-  if (!confirm("Ta bort denna körning?")) return;
+  if (!confirm("Delete this trip?")) return;
   fetch("/api/korjournal/" + id, {method:"DELETE"}).then(function() {
     allData = allData.filter(function(r) { return r.id !== id; }); filtrera();
   });
@@ -409,7 +409,7 @@ function eCalc() {
 
 document.getElementById("esave-btn").addEventListener("click", function() {
   var btn = this, id = document.getElementById("eid").value;
-  btn.disabled=true; btn.textContent="Sparar...";
+  btn.disabled=true; btn.textContent="Saving...";
   fetch("/api/korjournal/" + id, {
     method: "PUT", headers: {"Content-Type":"application/json"},
     body: JSON.stringify({
@@ -423,22 +423,22 @@ document.getElementById("esave-btn").addEventListener("click", function() {
     })
   }).then(function(res) {
     if (res.ok) { stang(); hamtaData(); }
-    else { document.getElementById("emsg").textContent = "Fel vid sparning"; }
-  }).catch(function() { document.getElementById("emsg").textContent = "Anslutningsfel"; })
-  .finally(function() { btn.disabled=false; btn.textContent="Spara ändringar"; });
+    else { document.getElementById("emsg").textContent = "Save error"; }
+  }).catch(function() { document.getElementById("emsg").textContent = "Connection error"; })
+  .finally(function() { btn.disabled=false; btn.textContent="Save changes"; });
 });
 
-// ── Utskrift ──
+// ── Print ──
 document.getElementById("skriv-ut-btn").addEventListener("click", function() {
   var fran = document.getElementById("fran-datum").value;
   var till = document.getElementById("till-datum").value;
-  var period = fran || till ? (fran||"?") + " – " + (till||"?") : "Alla datum";
+  var period = fran || till ? (fran||"?") + " – " + (till||"?") : "All dates";
   var h = document.getElementById("print-header");
-  h.textContent = "Körjournal  |  Period: " + period + "  |  Utskriven: " + new Date().toLocaleDateString("sv-SE");
+  h.textContent = "Driver Journal  |  Period: " + period + "  |  Printed: " + new Date().toLocaleDateString("sv-SE");
   window.print();
 });
 
-// ── CSV-export ──
+// ── CSV export ──
 document.getElementById("csv-btn").addEventListener("click", function() {
   var fran = document.getElementById("fran-datum").value;
   var till = document.getElementById("till-datum").value;
@@ -447,7 +447,7 @@ document.getElementById("csv-btn").addEventListener("click", function() {
     return (r.rutt||"").toLowerCase().indexOf(s) >= 0 &&
            (!fran || r.datum >= fran) && (!till || r.datum <= till);
   });
-  var rader = [["Dag","Datum","Rutt","Amount","Diesel","Driver Income","Remittance","Odo Start","Odo Stop","Mil Distance","Lit Diesel","Diesel Consumption"]];
+  var rader = [["Day","Date","Route","Amount","Diesel","Driver Income","Remittance","Odo Start","Odo Stop","Mil Distance","Lit Diesel","Diesel Consumption"]];
   fil.forEach(function(r) {
     rader.push([
       r.dag||"", r.datum||"", r.rutt||"",
@@ -464,9 +464,9 @@ document.getElementById("csv-btn").addEventListener("click", function() {
   }).join("\n");
   var blob = new Blob(["\uFEFF" + csv], {type:"text/csv;charset=utf-8;"});
   var a = document.createElement("a");
-  var period = (fran||"") + (fran&&till?"_till_":"") + (till||"") || "alla";
+  var period = (fran||"") + (fran&&till?"_till_":"") + (till||"") || "all";
   a.href = URL.createObjectURL(blob);
-  a.download = "korjournal_" + period + ".csv";
+  a.download = "journal_" + period + ".csv";
   a.click();
 });
 
@@ -475,16 +475,16 @@ document.getElementById("backup-btn").addEventListener("click", function() {
   window.location.href = "/api/backup";
 });
 
-// ── Räkna om alla rader ──
+// ── Recalculate all rows ──
 document.getElementById("rakna-om-btn").addEventListener("click", function() {
-  if (!confirm("Detta räknar om Driver Income och Remittance på ALLA rader med formeln (Amount − Diesel) × 25%/75%. Vill du fortsätta?")) return;
+  if (!confirm("This will recalculate Driver Income and Remittance on ALL rows using the formula (Amount − Diesel) × 25%/75%. Continue?")) return;
   fetch("/api/rakna-om", {method:"POST"})
     .then(function(r) { return r.json(); })
     .then(function(d) {
-      alert("Klart! " + d.antal + " rader räknades om.");
+      alert("Done! " + d.antal + " rows recalculated.");
       hamtaData();
     })
-    .catch(function() { alert("Fel vid omräkning"); });
+    .catch(function() { alert("Recalculation error"); });
 });
 
 hamtaAr();

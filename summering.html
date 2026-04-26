@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Årssammanfattning</title>
+  <title>Annual Summary</title>
   <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Fraunces:ital,wght@0,300;0,600;1,300&display=swap" rel="stylesheet">
   <style>
     :root {
@@ -117,20 +117,20 @@
 
 <nav>
   <div class="nav-inner">
-    <a href="/">① Körjournal</a>
-    <a href="/utgifter">② Utgifter</a>
-    <a href="/summering" class="active">③ Summering</a>
+    <a href="/">① Journal</a>
+    <a href="/utgifter">② Expenses</a>
+    <a href="/summering" class="active">③ Summary</a>
   </div>
 </nav>
 
 <div class="container">
-  <h1 class="page-title">Årssammanfattning</h1>
-  <p class="page-sub">Automatisk summering per år av alla registrerade data</p>
+  <h1 class="page-title">Annual Summary</h1>
+  <p class="page-sub">Automatic summary per year of all registered data</p>
 
-  <button class="uppdatera-btn" onclick="hamtaSummering()">↻ Uppdatera</button>
+  <button class="uppdatera-btn" onclick="hamtaSummering()">↻ Refresh</button>
 
   <div id="innehall">
-    <div class="laddar">Hämtar data...</div>
+    <div class="laddar">Loading data...</div>
   </div>
 </div>
 
@@ -140,13 +140,13 @@
   }
 
   async function hamtaSummering() {
-    document.getElementById("innehall").innerHTML = '<div class="laddar">Hämtar data...</div>';
+    document.getElementById("innehall").innerHTML = '<div class="laddar">Loading data...</div>';
     try {
       const res = await fetch("/api/summering");
       const data = await res.json();
 
       if (!data.length) {
-        document.getElementById("innehall").innerHTML = '<div class="tom">Inga data registrerade än.<br><br><a href="/" style="color:var(--accent)">Gå till körjournal →</a></div>';
+        document.getElementById("innehall").innerHTML = '<div class="tom">No data registered yet.<br><br><a href="/" style="color:var(--accent)">Go to journal →</a></div>';
         return;
       }
 
@@ -169,7 +169,7 @@
               <div class="cell-val remittance">₱ ${fmt(r.sum_remittance)}</div>
             </div>
             <div class="cell">
-              <div class="cell-label">Expensives</div>
+              <div class="cell-label">Expenses</div>
               <div class="cell-val expense">₱ ${fmt(r.expensives)}</div>
             </div>
             <div class="cell">
@@ -188,7 +188,7 @@
         </div>
       `).join("");
     } catch(e) {
-      document.getElementById("innehall").innerHTML = '<div class="tom">⚠ Kunde inte ansluta till servern.</div>';
+      document.getElementById("innehall").innerHTML = '<div class="tom">⚠ Could not connect to server.</div>';
     }
   }
 
