@@ -282,17 +282,24 @@ def backup():
 
 @app.route("/api/rakna-om", methods=["POST"])
 def rakna_om():
-    """Räknar om driver_income och remittance på alla rader med formeln (amount - diesel) * 0.25 / 0.75"""
+    """Recalculates driver_income, remittance and updates day on all rows"""
     antal = 0
+    days = ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"]
     with get_db() as con:
-        rows = con.execute("SELECT id, amount, diesel FROM korjournal").fetchall()
+        rows = con.execute("SELECT id, datum, amount, diesel FROM korjournal").fetchall()
         for r in rows:
             amount = r["amount"] or 0
             diesel = r["diesel"] or 0
             net = amount - diesel
             di = round(net * 0.25, 4)
             rem = round(net * 0.75, 4)
-            con.execute("UPDATE korjournal SET driver_income=?, remittance=? WHERE id=?", (di, rem, r["id"]))
+            dag = ""
+            try:
+                dt = datetime.strptime(r["datum"], "%Y-%m-%d")
+                dag = days[dt.weekday()]
+            except:
+                pass
+            con.execute("UPDATE korjournal SET driver_income=?, remittance=?, dag=? WHERE id=?", (di, rem, dag, r["id"]))
             antal += 1
     return jsonify({"status": "ok", "antal": antal})
 
